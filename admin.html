@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard - Car Rentals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        /* Admin-specific styles for car cards */
+        #manage-cars-panel .car-card .car-image {
+            height: 200px; /* Give a fixed height to the image container */
+            overflow: hidden;
+        }
+        #manage-cars-panel .car-card .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* This makes the image cover the container without distortion */
+        }
+        .image-previews {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .image-preview {
+            position: relative;
+            width: 100px;
+            height: 75px;
+        }
+        .image-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+        .remove-image-btn {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff4d4d;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 12px;
+            line-height: 20px;
+            text-align: center;
+            cursor: pointer;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-car"></i>
+                    <span>Blissful Kar - Admin</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">View Site</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Admin Dashboard Page -->
+        <section id="admin-dashboard" class="page active">
+            <h2 class="section-title">Admin Dashboard</h2>
+            
+            <div class="admin-actions">
+                <button class="btn" id="manage-cars-view-btn">Manage Cars</button>
+                <button class="btn" id="add-car-view-btn">Add Car</button>
+                <button class="btn" id="change-password-btn">Change Password</button>
+                <button class="btn btn-outline" id="logout-btn">Logout</button>
+            </div>
+            
+            <div id="add-car-panel" class="admin-panel" style="display:none;">
+                <h3>Add New Car</h3>
+                <form id="add-car-form">
+                    <div class="form-group">
+                        <label for="new-car-model">Model</label>
+                        <input type="text" id="new-car-model" placeholder="e.g., Toyota Camry" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="new-car-year">Year</label>
+                        <input type="number" id="new-car-year" placeholder="e.g., 2023" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="new-car-seating">Seating Capacity</label>
+                        <input type="number" id="new-car-seating" placeholder="e.g., 5" required />
+                    </div>
+                     <div class="form-group">
+                        <label for="new-car-transmission">Transmission</label>
+                        <input type="text" id="new-car-transmission" placeholder="e.g., Automatic" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="new-car-images">Car Images</label>
+                        <input type="file" id="new-car-images" accept="image/*" multiple required />
+                        <div id="new-car-image-previews" class="image-previews"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-car-description">Description</label>
+                        <textarea id="new-car-description" placeholder="Detailed description of the car" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-car-features">Features (comma-separated)</label>
+                        <input type="text" id="new-car-features" placeholder="e.g., GPS, Sunroof, Bluetooth" required />
+                    </div>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="new-car-featured" style="width: auto;" />
+                            Feature this car on the homepage
+                        </label>
+                    </div>
+                    <!-- Notification area for this form -->
+                    <div id="add-car-notification" style="margin-bottom: 1rem; text-align: center; color: red;"></div>
+                    <button type="submit" class="btn">Add Car</button>
+                    <button type="button" id="cancel-add-car" class="btn btn-outline">Cancel</button>
+                </form>
+            </div>
+
+            <div id="edit-car-panel" class="admin-panel" style="display:none;">
+                <h3>Edit Car</h3>
+                <form id="edit-car-form">
+                    <input type="hidden" id="edit-car-id">
+                    <div class="form-group">
+                        <label for="edit-car-model">Model</label>
+                        <input type="text" id="edit-car-model" placeholder="e.g., Toyota Camry" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-car-year">Year</label>
+                        <input type="number" id="edit-car-year" placeholder="e.g., 2023" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-car-seating">Seating Capacity</label>
+                        <input type="number" id="edit-car-seating" placeholder="e.g., 5" required />
+                    </div>
+                     <div class="form-group">
+                        <label for="edit-car-transmission">Transmission</label>
+                        <input type="text" id="edit-car-transmission" placeholder="e.g., Automatic" required />
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-car-images">Replace Images (optional)</label>
+                        <input type="file" id="edit-car-images" accept="image/*" multiple />
+                        <small>If you upload new images, they will replace all existing ones.</small>
+                        <div id="edit-car-image-previews" class="image-previews"></div>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-car-description">Description</label>
+                        <textarea id="edit-car-description" placeholder="Detailed description of the car" required></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="edit-car-features">Features (comma-separated)</label>
+                        <input type="text" id="edit-car-features" placeholder="e.g., GPS, Sunroof, Bluetooth" required />
+                    </div>
+                    <div class="form-group">
+                        <label style="display: flex; align-items: center; gap: 10px;">
+                            <input type="checkbox" id="edit-car-featured" style="width: auto;" />
+                            Feature this car on the homepage
+                        </label>
+                    </div>
+                    <button type="submit" class="btn">Update Car</button>
+                    <button type="button" id="cancel-edit-car" class="btn btn-outline">Cancel</button>
+                </form>
+            </div>
+
+            <div id="change-password-panel" class="admin-panel" style="display:none;">
+                <h3>Manage Credentials</h3>
+                <form id="change-password-form">
+                    <div class="form-group">
+                        <label for="update-username">Username</label>
+                        <input type="text" id="update-username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="current-password">Current Password</label>
+                        <input type="password" id="current-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="new-password">New Password</label>
+                        <input type="password" id="new-password" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirm-password">Confirm New Password</label>
+                        <input type="password" id="confirm-new-password" required>
+                    </div>
+                    <!-- Notification area for form submission status -->
+                    <div id="password-notification" style="margin-bottom: 1rem; text-align: center;"></div>
+                    <button type="submit" class="btn">Update Credentials</button>
+                </form>
+            </div>
+
+            <div id="manage-cars-panel" class="admin-panel">
+                <h3>Manage Cars</h3>
+                <div class="cars-grid">
+                    <!-- Cars for admin management will be dynamically added here -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-bottom">
+                <p>&copy; 2023 AutoRent Admin. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="admin.js?v=1.2"></script>
+</body>
+</html>

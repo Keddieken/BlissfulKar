@@ -1,0 +1,25 @@
+# Dependencies
+node_modules
+
+# Environment variables
+.env
+
+# Old data files (already correctly ignored)
+credentials.json
+cars.json
+
+# User-uploaded content directory (already correctly ignored)
+uploads/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# OS-generated files
+.DS_Store
+Thumbs.db
+
+# IDE-specific folders
+.idea/
+.vscode/

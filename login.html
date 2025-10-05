@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Login - Blissful Kar</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-car"></i>
+                    <span>Blissful Kar - Admin Login</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="index.html">View Site</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section id="admin-login" class="page active">
+            <h2 class="section-title">Admin Login</h2>
+            
+            <div class="login-container">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div id="confirm-password-group" class="form-group" style="display: none;">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Login</button>
+                    <p style="text-align: center; margin-top: 1rem;">
+                        <a href="#" id="forgot-password-link" style="display: none; color: var(--primary);">Forgot Password?</a>
+                    </p>
+                </form>
+            </div>
+        </section>
+    </main>
+    <script src="login.js?v=1.2"></script>
+</body>
+</html>

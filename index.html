@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rentals</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header & Navigation -->
+    <header>
+        <div class="container">
+            <nav>
+                <div class="logo">
+                    <i class="fas fa-car"></i>
+                    <span>Blissful Kar Rentals</span>
+                </div>
+                <ul class="nav-links">
+                    <li><a href="#" class="nav-link active" data-page="home">Home</a></li>
+                    <li><a href="#" class="nav-link" data-page="cars">Cars</a></li>
+                    <li><a href="#" class="nav-link" data-page="contact">Contact</a></li>
+                </ul>
+                <button class="mobile-menu-btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Home Page -->
+        <section id="home" class="page active">
+            <div class="hero">
+                <h1>Premium Car Rental Experience</h1>
+                <p>Discover the perfect vehicle for your journey with our wide selection of premium cars.</p>
+                <a href="#" class="btn explore-cars">Explore Our Fleet</a>
+            </div>
+            
+            <h2 class="section-title">Featured Vehicles</h2>
+            
+            <div class="cars-grid">
+                <!-- Featured cars will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Cars Page -->
+        <section id="cars" class="page">
+            <button class="btn btn-outline" id="back-to-home-btn">&larr; Back to Home</button>
+            <h2 class="section-title">Our Fleet</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Browse our extensive collection of premium rental vehicles</p>
+
+            <div class="filter-bar">
+                <input type="text" id="search-input" placeholder="Search by model...">
+                <select id="transmission-filter">
+                    <option value="">All Transmissions</option>
+                    <option value="Automatic">Automatic</option>
+                    <option value="Manual">Manual</option>
+                </select>
+                <select id="seating-filter">
+                    <option value="">All Seating</option>
+                    <option value="2">2 Seats</option>
+                    <option value="4">4-5 Seats</option>
+                    <option value="7">7+ Seats</option>
+                </select>
+                <button id="reset-filters-btn" class="btn btn-outline">Reset</button>
+            </div>
+            
+            <div class="cars-grid">
+                <!-- All cars will be dynamically added here -->
+            </div>
+        </section>
+
+        <!-- Car Details Page -->
+        <section id="car-details" class="page">
+            <button class="btn btn-outline" id="back-to-cars-btn">&larr; Back to Fleet</button>
+            <div class="car-detail-container">
+                <div class="car-detail-header">
+                    <div class="car-detail-image">
+                        <img id="detail-image" src="" alt="Car Image">
+                    </div>
+                    <div id="detail-thumbnails" class="car-detail-thumbnails">
+                        <!-- Thumbnail images will be added here -->
+                    </div>
+                    <div class="car-detail-info">
+                        <h2 id="detail-title" class="car-detail-title"></h2>
+
+                        <div class="car-detail-specs">
+                            <div class="car-detail-spec">
+                                <i class="fas fa-calendar-alt"></i>
+                                <span id="detail-year"></span>
+                            </div>
+                            <div class="car-detail-spec">
+                                <i class="fas fa-users"></i>
+                                <span id="detail-seating"></span>
+                            </div>
+                        
+                            <div class="car-detail-spec">
+                                <i class="fas fa-cog"></i>
+                                <span id="detail-transmission"></span>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <div style="padding: 2rem;">
+                    <h3>Description</h3>
+                    <p id="detail-description" class="car-detail-description"></p>
+                    
+                    <h3>Features</h3>
+                    <ul id="detail-features" style="list-style-position: inside; columns: 2; margin: 1rem 0;"></ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Page -->
+        <section id="contact" class="page">
+            <h2 class="section-title">Contact Us</h2>
+            <p style="text-align: center; margin-bottom: 2rem;">Have a question or need to get in touch? Fill out the form below.</p>
+
+            <div class="login-container" style="max-width: 800px;">
+                <form id="contact-form">
+                    <div class="form-group">
+                        <label for="contact-name">Your Name</label>
+                        <input type="text" id="contact-name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-email">Your Email</label>
+                        <input type="email" id="contact-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-subject">Subject</label>
+                        <input type="text" id="contact-subject" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="contact-message">Message</label>
+                        <textarea id="contact-message" rows="6" required></textarea>
+                    </div>
+                    <!-- Notification area for form submission status -->
+                    <div id="form-notification" style="margin-bottom: 1rem; text-align: center;"></div>
+                    <button type="submit" class="btn" style="width: 100%;">Send Message</button>
+                    </form>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Blissful Kar</h3>
+                    <p>Your premium car rental service for any occasion. We offer a wide range of vehicles to suit your needs.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <a href="#" data-page="home">Home</a>
+                    <a href="#" data-page="cars">Our Fleet</a>
+                    <a href="#" data-page="contact">Contact</a>
+
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Info</h3>
+                    <p>Accra, Ghana</p>
+                    <p>+233 24 404 6071</p>
+
+                    <a href="mailto:blissfulkar.rent@gmail.com">
+                        blissfulkar.rent@gmail.com
+                    </a>
+                    
+                </div>
+                
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Blissful Kar. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js?v=1.2"></script>
+</body>
+</html>
