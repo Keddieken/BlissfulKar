@@ -1,0 +1,69 @@
+[
+  {
+    "id": 1758912614181,
+    "model": "BMW",
+    "year": 2023,
+    "seating": 5,
+    "transmission": "Automatic",
+    "description": "BMW M5 Competition",
+    "features": [
+      "GPS",
+      "6cylinders",
+      "double exhaust"
+    ],
+    "images": [
+      "http://192.168.0.170:3001/uploads/image-1758912613803-301635291.webp",
+      "http://192.168.0.170:3001/uploads/image-1758912613968-101323184.webp",
+      "http://192.168.0.170:3001/uploads/image-1758912614068-533602460.webp"
+    ]
+  },
+  {
+    "id": 1758912777403,
+    "model": "Toyota",
+    "year": 2025,
+    "seating": 5,
+    "transmission": "Manual",
+    "description": "Dhdndb",
+    "features": [
+      "Dhh",
+      "dhd",
+      "dudjr"
+    ],
+    "images": [
+      "http://192.168.0.170:3001/uploads/image-1758912777136-431844115.webp",
+      "http://192.168.0.170:3001/uploads/image-1758912777209-283340297.webp",
+      "http://192.168.0.170:3001/uploads/image-1758912777304-493017119.webp"
+    ]
+  },
+  {
+    "id": 1758916277626,
+    "model": "Toyota Camry",
+    "year": 2025,
+    "seating": 5,
+    "transmission": "Automatic",
+    "description": "A luxurious car with comforatable seats",
+    "features": [
+      "GPS",
+      "Bluetooth"
+    ],
+    "images": [
+      "http://192.168.0.170:3001/uploads/image-1758916277142-342599244.webp"
+    ]
+  },
+  {
+    "id": 1759154747629,
+    "model": "Toyota",
+    "year": 2022,
+    "seating": 3,
+    "transmission": "Manual",
+    "description": "lkdfidiflkd kldfujolsjkl",
+    "features": [
+      "GPS",
+      "Censor"
+    ],
+    "images": [
+      "http://192.168.0.170:3001/uploads/image-1759154747395-663985328.webp"
+    ],
+    "featured": true
+  }
+]
