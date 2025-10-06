@@ -85,14 +85,14 @@ app.get('/api/cars', async (req, res) => {
 // Check if an admin account exists
 app.get('/api/admin/exists', async (req, res) => {
     const creds = await credentialsCollection.findOne({});
-    res.json({ exists: !!creds.username });
+    res.json({ exists: !!creds });
 });
 
 // Setup the first admin account
 app.post('/api/admin/setup', async (req, res) => {
     const { username, password } = req.body;
     const creds = await credentialsCollection.findOne({});
-    if (creds.username) {
+    if (creds) { // Check if a credentials document exists at all
         return res.status(403).json({ error: 'Admin account already exists.' });
     }
     const saltRounds = 10; // The cost factor for hashing

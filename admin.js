@@ -248,12 +248,17 @@ function renderAdminCars() {
         deleteBtn.textContent = 'Delete';
         deleteBtn.addEventListener('click', async (e) => {
             e.stopPropagation();
+            const carToDelete = cars.find(c => c.id === car.id);
+            if (!carToDelete) {
+                alert('Could not find car to delete.');
+                return;
+            }
             // Show a confirmation dialog before deleting
-            if (!confirm(`Are you sure you want to permanently delete the "${car.model}"? This cannot be undone.`)) {
+            if (!confirm(`Are you sure you want to permanently delete the "${carToDelete.model}"? This cannot be undone.`)) {
                 return; // Stop if the user clicks "Cancel"
             }
             try {
-                const response = await fetch(`${API_URL}/${car.id}`, { method: 'DELETE' });
+                const response = await fetch(`${API_URL}/${carToDelete.id}`, { method: 'DELETE' });
                 if (!response.ok) {
                     const errorData = await response.json();
                     if (response.status === 401 || response.status === 403) window.location.href = 'login.html';
