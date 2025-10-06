@@ -74,6 +74,29 @@
     <!-- Main Content -->
     <main class="container">
         <!-- Admin Dashboard Page -->
+        <section id="auth-container" class="page active" style="display: none;">
+            <h2 id="auth-title" class="section-title">Admin Login</h2>
+            
+            <div class="login-container">
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" id="username" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input type="password" id="password" required>
+                    </div>
+                    <div id="confirm-password-group" class="form-group" style="display: none;">
+                        <label for="confirm-password">Confirm Password</label>
+                        <input type="password" id="confirm-password">
+                    </div>
+                    <div id="auth-notification" style="margin-bottom: 1rem; text-align: center; color: red;"></div>
+                    <button type="submit" class="btn" style="width: 100%;">Login</button>
+                </form>
+            </div>
+        </section>
+
         <section id="admin-dashboard" class="page active">
             <h2 class="section-title">Admin Dashboard</h2>
             

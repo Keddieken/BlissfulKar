@@ -58,6 +58,12 @@ const verifyToken = (req, res, next) => {
     });
 };
 
+// Middleware to check authentication status
+const checkAuthStatus = (req, res) => {
+    // If verifyToken middleware passes, the user is authenticated.
+    res.json({ authenticated: true, username: req.user.username });
+};
+
 // Multer configuration: Use memory storage to process images with sharp before saving
 const upload = multer({ storage: multer.memoryStorage() });
 
@@ -81,6 +87,9 @@ app.get('/api/cars', async (req, res) => {
 });
 
 // --- Admin Credential Routes ---
+
+// Check if user is authenticated
+app.get('/api/admin/status', verifyToken, checkAuthStatus);
 
 // Check if an admin account exists
 app.get('/api/admin/exists', async (req, res) => {

@@ -1,5 +1,6 @@
 // Data will be fetched from the backend
 let cars = [];
+let isSetupMode = false;
 let addCarFiles = []; // To manage files for the "Add Car" form
 let editCarFiles = []; // To manage files for the "Edit Car" form
 
@@ -13,6 +14,10 @@ const API_BASE_URL = '/api';
 const API_URL = `${API_BASE_URL}/cars`;
 
 // DOM Elements
+const authContainer = document.getElementById('auth-container');
+const adminDashboard = document.getElementById('admin-dashboard');
+const loginForm = document.getElementById('login-form');
+
 const manageCarsViewBtn = document.getElementById('manage-cars-view-btn');
 const addCarViewBtn = document.getElementById('add-car-view-btn');
 const changePasswordBtn = document.getElementById('change-password-btn');
@@ -27,14 +32,117 @@ const addCarForm = document.getElementById('add-car-form');
 const editCarForm = document.getElementById('edit-car-form');
 const changePasswordForm = document.getElementById('change-password-form');
 
-// Initialize the admin dashboard
-function initAdmin() {
-    fetchAndRenderCars();
-    setupEventListeners();
+// --- Authentication Logic ---
+
+async function checkAuth() {
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/status`);
+        if (response.ok) {
+            // User is authenticated
+            showDashboard();
+        } else {
+            // User is not authenticated
+            showLogin();
+        }
+    } catch (error) {
+        console.error('Auth check failed:', error);
+        showLogin();
+    }
+}
+
+async function showLogin() {
+    adminDashboard.style.display = 'none';
+    authContainer.style.display = 'block';
+
+    const pageTitle = document.getElementById('auth-title');
+    const confirmPasswordGroup = document.getElementById('confirm-password-group');
+    const submitButton = loginForm.querySelector('button[type="submit"]');
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/exists`);
+        const data = await response.json();
+        isSetupMode = !data.exists;
+        
+        if (isSetupMode) {
+            pageTitle.textContent = 'Create Admin Account';
+            submitButton.textContent = 'Create Account';
+            confirmPasswordGroup.style.display = 'block';
+        } else {
+            pageTitle.textContent = 'Admin Login';
+            submitButton.textContent = 'Login';
+            confirmPasswordGroup.style.display = 'none';
+        }
+    } catch (error) {
+        console.error('Error checking admin status:', error);
+        document.getElementById('auth-notification').textContent = 'Could not connect to the server.';
+        submitButton.disabled = true;
+    }
+}
+
+function showDashboard() {
+    authContainer.style.display = 'none';
+    adminDashboard.style.display = 'block';
+    fetchAndRenderCars(); // Fetch cars now that we are authenticated
+}
+
+async function handleLoginSubmit(e) {
+    e.preventDefault();
+    const submitButton = loginForm.querySelector('button[type="submit"]');
+    const notificationArea = document.getElementById('auth-notification');
+    notificationArea.textContent = '';
+    submitButton.disabled = true;
+    submitButton.textContent = 'Processing...';
+
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+    
+    const endpoint = isSetupMode ? 'setup' : 'login';
+    const body = { username, password };
+
+    if (isSetupMode) {
+        const confirmPassword = document.getElementById('confirm-password').value.trim();
+        if (password !== confirmPassword) {
+            notificationArea.textContent = 'Passwords do not match.';
+            submitButton.disabled = false;
+            submitButton.textContent = 'Create Account';
+            return;
+        }
+        if (password.length < 6) {
+            notificationArea.textContent = 'Password must be at least 6 characters long.';
+            submitButton.disabled = false;
+            submitButton.textContent = 'Create Account';
+            return;
+        }
+    }
+
+    try {
+        const response = await fetch(`${API_BASE_URL}/admin/${endpoint}`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(body)
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'An error occurred.');
+        }
+        
+        if (isSetupMode) {
+            alert('Admin account created successfully! Please log in.');
+            window.location.reload();
+        } else {
+            showDashboard();
+        }
+    } catch (error) {
+        notificationArea.textContent = error.message;
+        submitButton.disabled = false;
+        submitButton.textContent = isSetupMode ? 'Create Account' : 'Login';
+    }
 }
 
 // Set up event listeners
 function setupEventListeners() {
+    loginForm.addEventListener('submit', handleLoginSubmit);
+
     manageCarsViewBtn.addEventListener('click', () => showPanel(manageCarsPanel));
     addCarViewBtn.addEventListener('click', () => showPanel(addCarPanel));
     changePasswordBtn.addEventListener('click', () => {
@@ -48,7 +156,7 @@ function setupEventListeners() {
         } catch (error) {
             console.error('Logout failed:', error);
         } finally {
-            window.location.href = 'index.html';
+            window.location.reload(); // Reload to show the login form
         }
     });
 
@@ -78,7 +186,7 @@ function setupEventListeners() {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                if (response.status === 401 || response.status === 403) window.location.href = 'login.html';
+                if (response.status === 401 || response.status === 403) return showLogin();
                 throw new Error(errorData.error || 'Failed to add car');
             }
             
@@ -122,7 +230,7 @@ function setupEventListeners() {
             });
             if (!response.ok) {
                 const errorData = await response.json();
-                if (response.status === 401 || response.status === 403) window.location.href = 'login.html';
+                if (response.status === 401 || response.status === 403) return showLogin();
                 throw new Error(errorData.error || 'Failed to update car');
             }
             
@@ -212,7 +320,7 @@ async function fetchAndRenderCars() {
         const response = await fetch(API_URL);
         if (!response.ok) {
             // If unauthorized, redirect to login
-            if (response.status === 401 || response.status === 403) window.location.href = 'login.html';
+            if (response.status === 401 || response.status === 403) return showLogin();
             throw new Error('Network response was not ok');
         }
         cars = await response.json();
@@ -261,7 +369,7 @@ function renderAdminCars() {
                 const response = await fetch(`${API_URL}/${carToDelete.id}`, { method: 'DELETE' });
                 if (!response.ok) {
                     const errorData = await response.json();
-                    if (response.status === 401 || response.status === 403) window.location.href = 'login.html';
+                    if (response.status === 401 || response.status === 403) return showLogin();
                     throw new Error(errorData.error || 'Failed to delete car');
                 }
                 fetchAndRenderCars();
@@ -361,5 +469,9 @@ function handleFileSelect(event, previewContainerId, formType) {
     renderPreviews();
 }
 
-// Initialize the app when the DOM is loaded
+// Initialize the admin page
+function initAdmin() {
+    setupEventListeners();
+    checkAuth();
+}
 document.addEventListener('DOMContentLoaded', initAdmin);
